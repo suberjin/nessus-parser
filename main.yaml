@@ -1,0 +1,32 @@
+---
+- name: Test command
+  hosts: all
+  vars:
+    report: report.csv
+  tasks:
+
+    - name: Update secure packages on the Centos servers
+      block:
+        - name: Load variable to fact
+          ansible.builtin.set_fact:
+            the_varc: "{{ lookup('pipe', 'python centos.py ' + hostvars[inventory_hostname]['ansible_host'] + ' {{ report }}') | from_json }}"
+          delegate_to: 127.0.0.1
+
+        - name: Install packages on CentOS servers
+          ansible.builtin.yum:
+            name: "{{ item.package }}"
+          with_list: "{{ the_varc }}"
+      when: ansible_facts['distribution'] == 'CentOS'
+
+    - name: Update secure packages on the Ubuntu servers
+      block:
+        - name: Get package list
+          ansible.builtin.set_fact:
+            the_var: "{{ lookup('pipe', 'python ubuntu.py ' + hostvars[inventory_hostname]['ansible_host'] + ' {{ report }}') | from_json }}"
+          delegate_to: 127.0.0.1
+
+        - name: Install packages on Ubuntu servers
+          ansible.builtin.apt:
+            name: "{{ item.package }}"
+          with_list: "{{ the_var }}"
+      when: ansible_facts['distribution'] == 'Ubuntu'

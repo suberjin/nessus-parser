@@ -1,0 +1,4 @@
+ansible
+ansible-base
+Jinja2
+yamllint==1.25.0
