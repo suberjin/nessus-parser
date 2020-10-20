@@ -15,6 +15,7 @@
         - name: Install packages on CentOS servers
           ansible.builtin.yum:
             name: "{{ item.package }}"
+            state: latest
           with_list: "{{ the_varc }}"
       when: ansible_facts['distribution'] == 'CentOS'
 
@@ -28,5 +29,6 @@
         - name: Install packages on Ubuntu servers
           ansible.builtin.apt:
             name: "{{ item.package }}"
+            state: latest
           with_list: "{{ the_var }}"
       when: ansible_facts['distribution'] == 'Ubuntu'
