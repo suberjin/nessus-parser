@@ -43,3 +43,5 @@ The packages could be installed via:
 - It is necessary to configure notifications about updated packages. We also need log update reports.
 - We need to check a package before update in CVS databases in order to make sure that the new package
 doesn't have more serious vulnerabilities.
+- It is necessary to start receiving this information from Nessus via API or any other possible 
+automation way.
